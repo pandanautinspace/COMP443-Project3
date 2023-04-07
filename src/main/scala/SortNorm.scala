@@ -31,6 +31,9 @@ object SearchedWebPageNormalize {
     }
 }
 
+def aD(x: Double): Double = if x.isNaN then 0 else x
+def mD(x: Double) :Double = if x.isNaN then 1 else x
+
 // NOTE: This is a bogus sorting option that ignores our search weights and just uses alphabetical order on name
 // This implementation exists only to give you an idea of what is required in your other objects
 object NameOrdering extends Ordering[SearchedWebPage] {
@@ -39,12 +42,12 @@ object NameOrdering extends Ordering[SearchedWebPage] {
 
 object ArithmeticOrdering extends Ordering[SearchedWebPage] {
     // TODO: implement an actual comparison based on Arithmetic means of weight and textmatch
-    def compare(a: SearchedWebPage, b: SearchedWebPage): Int = 0
+    def compare(a: SearchedWebPage, b: SearchedWebPage): Int = (aD(a.textmatch) + aD(a.weight)) compare (aD(b.textmatch) + aD(b.weight))
 }
 
 object GeometricOrdering extends Ordering[SearchedWebPage] {
     // TODO: implement an actual comparison based on Geometric means of weight and textmatch
-    def compare(a: SearchedWebPage, b: SearchedWebPage): Int = 0
+    def compare(a: SearchedWebPage, b: SearchedWebPage): Int = math.sqrt(mD(a.textmatch) * mD(a.weight)) compare math.sqrt(mD(b.textmatch) * mD(b.weight))
 }
 
 object HarmonicOrdering extends Ordering[SearchedWebPage] {
